@@ -15,27 +15,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The assignsubmission_onlinetext submission_updated event.
+ * The assignsubmission_cmpaas submission_updated event.
  *
- * @package    assignsubmission_onlinetext
+ * @package    assignsubmission_cmpaas
  * @copyright  2014 Adrian Greeve <adrian@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignsubmission_onlinetext\event;
+namespace assignsubmission_cmpaas\event;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The assignsubmission_onlinetext submission_updated event class.
+ * The assignsubmission_cmpaas submission_updated event class.
  *
  * @property-read array $other {
  *      Extra information about the event.
  *
- *      - int onlinetextwordcount: Word count of the online text submission.
+ *      - int cmpaaswordcount: Word count of the online text submission.
  * }
  *
- * @package    assignsubmission_onlinetext
+ * @package    assignsubmission_cmpaas
  * @since      Moodle 2.7
  * @copyright  2014 Adrian Greeve <adrian@moodle.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -47,7 +47,7 @@ class submission_updated extends \mod_assign\event\submission_updated {
      */
     protected function init() {
         parent::init();
-        $this->data['objecttable'] = 'assignsubmission_onlinetext';
+        $this->data['objecttable'] = 'assignsubmission_cmpaas';
     }
 
     /**
@@ -57,7 +57,7 @@ class submission_updated extends \mod_assign\event\submission_updated {
      */
     public function get_description() {
         $descriptionstring = "The user with id '$this->userid' updated an online text submission with " .
-            "'{$this->other['onlinetextwordcount']}' words in the assignment with course module id " .
+            "'{$this->other['cmpaaswordcount']}' words in the assignment with course module id " .
             "'$this->contextinstanceid'";
         if (!empty($this->other['groupid'])) {
             $descriptionstring .= " for the group with id '{$this->other['groupid']}'.";
@@ -76,13 +76,13 @@ class submission_updated extends \mod_assign\event\submission_updated {
      */
     protected function validate_data() {
         parent::validate_data();
-        if (!isset($this->other['onlinetextwordcount'])) {
-            throw new \coding_exception('The \'onlinetextwordcount\' value must be set in other.');
+        if (!isset($this->other['cmpaaswordcount'])) {
+            throw new \coding_exception('The \'cmpaaswordcount\' value must be set in other.');
         }
     }
 
     public static function get_objectid_mapping() {
-        // No mapping available for 'assignsubmission_onlinetext'.
-        return array('db' => 'assignsubmission_onlinetext', 'restore' => \core\event\base::NOT_MAPPED);
+        // No mapping available for 'assignsubmission_cmpaas'.
+        return array('db' => 'assignsubmission_cmpaas', 'restore' => \core\event\base::NOT_MAPPED);
     }
 }

@@ -15,19 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The assignsubmission_onlinetext assessable uploaded event.
+ * The assignsubmission_cmpaas assessable uploaded event.
  *
- * @package    assignsubmission_onlinetext
+ * @package    assignsubmission_cmpaas
  * @copyright  2013 Frédéric Massart
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace assignsubmission_onlinetext\event;
+namespace assignsubmission_cmpaas\event;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The assignsubmission_onlinetext assessable uploaded event class.
+ * The assignsubmission_cmpaas assessable uploaded event class.
  *
  * @property-read array $other {
  *      Extra information about event.
@@ -35,7 +35,7 @@ defined('MOODLE_INTERNAL') || die();
  *      - string format: (optional) content format.
  * }
  *
- * @package    assignsubmission_onlinetext
+ * @package    assignsubmission_cmpaas
  * @since      Moodle 2.6
  * @copyright  2013 Frédéric Massart
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -86,7 +86,7 @@ class assessable_uploaded extends \core\event\assessable_uploaded {
      * @return string
      */
     public static function get_name() {
-        return get_string('eventassessableuploaded', 'assignsubmission_onlinetext');
+        return get_string('eventassessableuploaded', 'assignsubmission_cmpaas');
     }
 
     /**

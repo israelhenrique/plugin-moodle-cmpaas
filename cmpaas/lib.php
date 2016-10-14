@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the moodle hooks for the submission onlinetext plugin
+ * This file contains the moodle hooks for the submission cmpaas plugin
  *
- * @package   assignsubmission_onlinetext
+ * @package   assignsubmission_cmpaas
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,7 +34,7 @@ defined('MOODLE_INTERNAL') || die();
  * @param bool $forcedownload
  * @return bool false if file not found, does not return if found - just send the file
  */
-function assignsubmission_onlinetext_pluginfile($course, $cm, context $context, $filearea, $args, $forcedownload) {
+function assignsubmission_cmpaas_pluginfile($course, $cm, context $context, $filearea, $args, $forcedownload) {
     global $DB, $CFG;
 
     if ($context->contextlevel != CONTEXT_MODULE) {
@@ -70,7 +70,7 @@ function assignsubmission_onlinetext_pluginfile($course, $cm, context $context, 
 
     $relativepath = implode('/', $args);
 
-    $fullpath = "/{$context->id}/assignsubmission_onlinetext/$filearea/$itemid/$relativepath";
+    $fullpath = "/{$context->id}/assignsubmission_cmpaas/$filearea/$itemid/$relativepath";
 
     $fs = get_file_storage();
     if (!($file = $fs->get_file_by_hash(sha1($fullpath))) || $file->is_directory()) {

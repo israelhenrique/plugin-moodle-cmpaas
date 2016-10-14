@@ -15,14 +15,34 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file defines the admin settings for this plugin
+ * Upgrade code for install
  *
- * @package   assignsubmission_onlinetext
+ * @package   assignsubmission_cmpaas
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$settings->add(new admin_setting_configcheckbox('assignsubmission_onlinetext/default',
-                   new lang_string('default', 'assignsubmission_onlinetext'),
-                   new lang_string('default_help', 'assignsubmission_onlinetext'), 0));
+defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Stub for upgrade code
+ * @param int $oldversion
+ * @return bool
+ */
+function xmldb_assignsubmission_cmpaas_upgrade($oldversion) {
+    global $CFG;
+
+    // Moodle v2.8.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Moodle v2.9.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Moodle v3.0.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    // Moodle v3.1.0 release upgrade line.
+    // Put any upgrade step following this.
+
+    return true;
+}

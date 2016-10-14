@@ -15,15 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Capability definitions for this module.
+ * This file defines the admin settings for this plugin
  *
- * @package   assignsubmission_onlinetext
+ * @package   assignsubmission_cmpaas
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$capabilities = array(
-
-
-
-);
+$settings->add(new admin_setting_configcheckbox('assignsubmission_cmpaas/default',
+                   new lang_string('default', 'assignsubmission_cmpaas'),
+                   new lang_string('default_help', 'assignsubmission_cmpaas'), 0));

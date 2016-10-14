@@ -17,7 +17,7 @@
 /**
  * Contains the event tests for the plugin.
  *
- * @package   assignsubmission_onlinetext
+ * @package   assignsubmission_cmpaas
  * @copyright 2013 Frédéric Massart
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/mod/assign/tests/base_test.php');
 
-class assignsubmission_onlinetext_events_testcase extends advanced_testcase {
+class assignsubmission_cmpaas_events_testcase extends advanced_testcase {
 
     /** @var stdClass $user A user to submit an assignment. */
     protected $user;
@@ -51,7 +51,7 @@ class assignsubmission_onlinetext_events_testcase extends advanced_testcase {
     protected $data;
 
     /**
-     * Setup all the various parts of an assignment activity including creating an onlinetext submission.
+     * Setup all the various parts of an assignment activity including creating an cmpaas submission.
      */
     protected function setUp() {
         $this->user = $this->getDataGenerator()->create_user();
@@ -66,7 +66,7 @@ class assignsubmission_onlinetext_events_testcase extends advanced_testcase {
         $this->setUser($this->user->id);
         $this->submission = $this->assign->get_user_submission($this->user->id, true);
         $this->data = new stdClass();
-        $this->data->onlinetext_editor = array(
+        $this->data->cmpaas_editor = array(
             'itemid' => file_get_unused_draft_itemid(),
             'text' => 'Submission text',
             'format' => FORMAT_PLAIN
@@ -79,14 +79,14 @@ class assignsubmission_onlinetext_events_testcase extends advanced_testcase {
     public function test_assessable_uploaded() {
         $this->resetAfterTest();
 
-        $plugin = $this->assign->get_submission_plugin_by_type('onlinetext');
+        $plugin = $this->assign->get_submission_plugin_by_type('cmpaas');
         $sink = $this->redirectEvents();
         $plugin->save($this->submission, $this->data);
         $events = $sink->get_events();
 
         $this->assertCount(2, $events);
         $event = reset($events);
-        $this->assertInstanceOf('\assignsubmission_onlinetext\event\assessable_uploaded', $event);
+        $this->assertInstanceOf('\assignsubmission_cmpaas\event\assessable_uploaded', $event);
         $this->assertEquals($this->context->id, $event->contextid);
         $this->assertEquals($this->submission->id, $event->objectid);
         $this->assertEquals(array(), $event->other['pathnamehashes']);
@@ -104,19 +104,19 @@ class assignsubmission_onlinetext_events_testcase extends advanced_testcase {
     }
 
     /**
-     * Test that the submission_created event is fired when an onlinetext submission is saved.
+     * Test that the submission_created event is fired when an cmpaas submission is saved.
      */
     public function test_submission_created() {
         $this->resetAfterTest();
 
-        $plugin = $this->assign->get_submission_plugin_by_type('onlinetext');
+        $plugin = $this->assign->get_submission_plugin_by_type('cmpaas');
         $sink = $this->redirectEvents();
         $plugin->save($this->submission, $this->data);
         $events = $sink->get_events();
 
         $this->assertCount(2, $events);
         $event = $events[1];
-        $this->assertInstanceOf('\assignsubmission_onlinetext\event\submission_created', $event);
+        $this->assertInstanceOf('\assignsubmission_cmpaas\event\submission_created', $event);
         $this->assertEquals($this->context->id, $event->contextid);
         $this->assertEquals($this->course->id, $event->courseid);
         $this->assertEquals($this->submission->id, $event->other['submissionid']);
@@ -126,13 +126,13 @@ class assignsubmission_onlinetext_events_testcase extends advanced_testcase {
     }
 
     /**
-     * Test that the submission_updated event is fired when an onlinetext
+     * Test that the submission_updated event is fired when an cmpaas
      * submission is saved and an existing submission already exists.
      */
     public function test_submission_updated() {
         $this->resetAfterTest();
 
-        $plugin = $this->assign->get_submission_plugin_by_type('onlinetext');
+        $plugin = $this->assign->get_submission_plugin_by_type('cmpaas');
         $sink = $this->redirectEvents();
         // Create a submission.
         $plugin->save($this->submission, $this->data);
@@ -142,7 +142,7 @@ class assignsubmission_onlinetext_events_testcase extends advanced_testcase {
 
         $this->assertCount(4, $events);
         $event = $events[3];
-        $this->assertInstanceOf('\assignsubmission_onlinetext\event\submission_updated', $event);
+        $this->assertInstanceOf('\assignsubmission_cmpaas\event\submission_updated', $event);
         $this->assertEquals($this->context->id, $event->contextid);
         $this->assertEquals($this->course->id, $event->courseid);
         $this->assertEquals($this->submission->id, $event->other['submissionid']);

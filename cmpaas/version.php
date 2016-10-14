@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the version information for the onlinetext submission plugin
+ * This file contains the version information for the cmpaas submission plugin
  *
- * @package    assignsubmission_onlinetext
+ * @package    assignsubmission_cmpaas
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,4 +26,4 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2016052300;
 $plugin->requires  = 2016051900;
-$plugin->component = 'assignsubmission_onlinetext';
+$plugin->component = 'assignsubmission_cmpaas';

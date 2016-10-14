@@ -15,51 +15,52 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains the definition for the library class for onlinetext submission plugin
+ * This file contains the definition for the library class for cmpaas submission plugin
  *
  * This class provides all the functionality for the new assign module.
  *
- * @package assignsubmission_onlinetext
+ * @package assignsubmission_cmpaas
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 // File area for online text submission assignment.
-define('ASSIGNSUBMISSION_ONLINETEXT_FILEAREA', 'submissions_onlinetext');
+define('ASSIGNSUBMISSION_CMPAAS_FILEAREA', 'submissions_cmpaas');
 
 /**
- * library class for onlinetext submission plugin extending submission plugin base class
+ * library class for cmpaas submission plugin extending submission plugin base class
  *
- * @package assignsubmission_onlinetext
+ * @package assignsubmission_cmpaas
  * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class assign_submission_onlinetext extends assign_submission_plugin {
+class assign_submission_cmpaas extends assign_submission_plugin {
 
     /**
      * Get the name of the online text submission plugin
      * @return string
      */
     public function get_name() {
-        return get_string('onlinetext', 'assignsubmission_onlinetext');
+        return get_string('cmpaas', 'assignsubmission_cmpaas');
+        //return "CMPAAS";
     }
 
 
     /**
-     * Get onlinetext submission information from the database
+     * Get cmpaas submission information from the database
      *
      * @param  int $submissionid
      * @return mixed
      */
-    private function get_onlinetext_submission($submissionid) {
+    private function get_cmpaas_submission($submissionid) {
         global $DB;
 
-        return $DB->get_record('assignsubmission_onlinetext', array('submission'=>$submissionid));
+        return $DB->get_record('assignsubmission_cmpaas', array('submission'=>$submissionid));
     }
 
     /**
-     * Get the settings for onlinetext submission plugin
+     * Get the settings for cmpaas submission plugin
      *
      * @param MoodleQuickForm $mform The form to add elements to
      * @return void
@@ -71,47 +72,47 @@ class assign_submission_onlinetext extends assign_submission_plugin {
         $defaultwordlimitenabled = $this->get_config('wordlimitenabled');
 
         $options = array('size' => '6', 'maxlength' => '6');
-        $name = get_string('wordlimit', 'assignsubmission_onlinetext');
+        $name = get_string('wordlimit', 'assignsubmission_cmpaas');
 
-        // Create a text box that can be enabled/disabled for onlinetext word limit.
+        // Create a text box that can be enabled/disabled for cmpaas word limit.
         $wordlimitgrp = array();
-        $wordlimitgrp[] = $mform->createElement('text', 'assignsubmission_onlinetext_wordlimit', '', $options);
-        $wordlimitgrp[] = $mform->createElement('checkbox', 'assignsubmission_onlinetext_wordlimit_enabled',
+        $wordlimitgrp[] = $mform->createElement('text', 'assignsubmission_cmpaas_wordlimit', '', $options);
+        $wordlimitgrp[] = $mform->createElement('checkbox', 'assignsubmission_cmpaas_wordlimit_enabled',
                 '', get_string('enable'));
-        $mform->addGroup($wordlimitgrp, 'assignsubmission_onlinetext_wordlimit_group', $name, ' ', false);
-        $mform->addHelpButton('assignsubmission_onlinetext_wordlimit_group',
+        $mform->addGroup($wordlimitgrp, 'assignsubmission_cmpaas_wordlimit_group', $name, ' ', false);
+        $mform->addHelpButton('assignsubmission_cmpaas_wordlimit_group',
                               'wordlimit',
-                              'assignsubmission_onlinetext');
-        $mform->disabledIf('assignsubmission_onlinetext_wordlimit',
-                           'assignsubmission_onlinetext_wordlimit_enabled',
+                              'assignsubmission_cmpaas');
+        $mform->disabledIf('assignsubmission_cmpaas_wordlimit',
+                           'assignsubmission_cmpaas_wordlimit_enabled',
                            'notchecked');
 
         // Add numeric rule to text field.
         $wordlimitgrprules = array();
-        $wordlimitgrprules['assignsubmission_onlinetext_wordlimit'][] = array(null, 'numeric', null, 'client');
-        $mform->addGroupRule('assignsubmission_onlinetext_wordlimit_group', $wordlimitgrprules);
+        $wordlimitgrprules['assignsubmission_cmpaas_wordlimit'][] = array(null, 'numeric', null, 'client');
+        $mform->addGroupRule('assignsubmission_cmpaas_wordlimit_group', $wordlimitgrprules);
 
         // Rest of group setup.
-        $mform->setDefault('assignsubmission_onlinetext_wordlimit', $defaultwordlimit);
-        $mform->setDefault('assignsubmission_onlinetext_wordlimit_enabled', $defaultwordlimitenabled);
-        $mform->setType('assignsubmission_onlinetext_wordlimit', PARAM_INT);
-        $mform->disabledIf('assignsubmission_onlinetext_wordlimit_group',
-                           'assignsubmission_onlinetext_enabled',
+        $mform->setDefault('assignsubmission_cmpaas_wordlimit', $defaultwordlimit);
+        $mform->setDefault('assignsubmission_cmpaas_wordlimit_enabled', $defaultwordlimitenabled);
+        $mform->setType('assignsubmission_cmpaas_wordlimit', PARAM_INT);
+        $mform->disabledIf('assignsubmission_cmpaas_wordlimit_group',
+                           'assignsubmission_cmpaas_enabled',
                            'notchecked');
     }
 
     /**
-     * Save the settings for onlinetext submission plugin
+     * Save the settings for cmpaas submission plugin
      *
      * @param stdClass $data
      * @return bool
      */
     public function save_settings(stdClass $data) {
-        if (empty($data->assignsubmission_onlinetext_wordlimit) || empty($data->assignsubmission_onlinetext_wordlimit_enabled)) {
+        if (empty($data->assignsubmission_cmpaas_wordlimit) || empty($data->assignsubmission_cmpaas_wordlimit_enabled)) {
             $wordlimit = 0;
             $wordlimitenabled = 0;
         } else {
-            $wordlimit = $data->assignsubmission_onlinetext_wordlimit;
+            $wordlimit = $data->assignsubmission_cmpaas_wordlimit;
             $wordlimitenabled = 1;
         }
 
@@ -135,30 +136,48 @@ class assign_submission_onlinetext extends assign_submission_plugin {
         $editoroptions = $this->get_edit_options();
         $submissionid = $submission ? $submission->id : 0;
 
-        if (!isset($data->onlinetext)) {
-            $data->onlinetext = '';
+        if (!isset($data->cmpaas)) {
+            $data->cmpaas = '';
         }
-        if (!isset($data->onlinetextformat)) {
-            $data->onlinetextformat = editors_get_preferred_format();
+        if (!isset($data->cmpaasformat)) {
+            $data->cmpaasformat = editors_get_preferred_format();
         }
 
         if ($submission) {
-            $onlinetextsubmission = $this->get_onlinetext_submission($submission->id);
-            if ($onlinetextsubmission) {
-                $data->onlinetext = $onlinetextsubmission->onlinetext;
-                $data->onlinetextformat = $onlinetextsubmission->onlineformat;
+            $cmpaassubmission = $this->get_cmpaas_submission($submission->id);
+            if ($cmpaassubmission) {
+                $data->cmpaas = $cmpaassubmission->cmpaas;
+                $data->cmpaasformat = $cmpaassubmission->onlineformat;
             }
 
         }
 
         $data = file_prepare_standard_editor($data,
-                                             'onlinetext',
+                                             'cmpaas',
                                              $editoroptions,
                                              $this->assignment->get_context(),
-                                             'assignsubmission_onlinetext',
-                                             ASSIGNSUBMISSION_ONLINETEXT_FILEAREA,
+                                             'assignsubmission_cmpaas',
+                                             ASSIGNSUBMISSION_CMPAAS_FILEAREA,
                                              $submissionid);
-        $mform->addElement('editor', 'onlinetext_editor', $this->get_name(), null, $editoroptions);
+
+                                             $mform->addElement('hidden', 'reply', $data->cmpaas);
+                                             $editormaps = '<div id="editor_cmpaas" onmouseout="salvaMapa();"><iframe width="560" height="700" src="http://localhost/editor/editor.html" frameborder="0" allowfullscreen></iframe></div>';
+                                             $mform->addElement('html', $editormaps);
+                                             $mform->addElement('editor', 'cmpaas_editor', $this->get_name(), null, $editoroptions);
+
+                                             $jscript = '<script type="text/javascript">
+
+                                             var json = document.getElementsByName(\'reply\')[0].value;
+                                                          console.log(json);
+                                                          localStorage.setItem(\'unsavedData\',json)
+                                            document.getElementById(\'fitem_id_cmpaas_editor\').style.display = \'none\';
+                                             function salvaMapa(){
+                                               document.getElementsByName(\'reply\')[0].value = localStorage.getItem(\'unsavedData\');
+                                             }
+                                              </script>';
+                                             $mform->addElement('html', $jscript);
+
+
 
         return true;
     }
@@ -193,27 +212,30 @@ class assign_submission_onlinetext extends assign_submission_plugin {
         $editoroptions = $this->get_edit_options();
 
         $data = file_postupdate_standard_editor($data,
-                                                'onlinetext',
+                                                'cmpaas',
                                                 $editoroptions,
                                                 $this->assignment->get_context(),
-                                                'assignsubmission_onlinetext',
-                                                ASSIGNSUBMISSION_ONLINETEXT_FILEAREA,
+                                                'assignsubmission_cmpaas',
+                                                ASSIGNSUBMISSION_CMPAAS_FILEAREA,
                                                 $submission->id);
 
-        $onlinetextsubmission = $this->get_onlinetext_submission($submission->id);
+
+        $cmpaassubmission = $this->get_cmpaas_submission($submission->id);
+
 
         $fs = get_file_storage();
 
         $files = $fs->get_area_files($this->assignment->get_context()->id,
-                                     'assignsubmission_onlinetext',
-                                     ASSIGNSUBMISSION_ONLINETEXT_FILEAREA,
+                                     'assignsubmission_cmpaas',
+                                     ASSIGNSUBMISSION_CMPAAS_FILEAREA,
                                      $submission->id,
                                      'id',
                                      false);
 
         // Check word count before submitting anything.
-        $exceeded = $this->check_word_count(trim($data->onlinetext));
+        $exceeded = $this->check_word_count(trim($data->cmpaas));
         if ($exceeded) {
+
             $this->set_error($exceeded);
             return false;
         }
@@ -224,14 +246,14 @@ class assign_submission_onlinetext extends assign_submission_plugin {
             'objectid' => $submission->id,
             'other' => array(
                 'pathnamehashes' => array_keys($files),
-                'content' => trim($data->onlinetext),
-                'format' => $data->onlinetext_editor['format']
+                'content' => trim($data->cmpaas),
+                'format' => $data->cmpaas_editor['format']
             )
         );
         if (!empty($submission->userid) && ($submission->userid != $USER->id)) {
             $params['relateduserid'] = $submission->userid;
         }
-        $event = \assignsubmission_onlinetext\event\assessable_uploaded::create($params);
+        $event = \assignsubmission_cmpaas\event\assessable_uploaded::create($params);
         $event->trigger();
 
         $groupname = null;
@@ -244,7 +266,7 @@ class assign_submission_onlinetext extends assign_submission_plugin {
             $params['relateduserid'] = $submission->userid;
         }
 
-        $count = count_words($data->onlinetext);
+        $count = count_words($data->cmpaas);
 
         // Unset the objectid and other field from params for use in submission events.
         unset($params['objectid']);
@@ -253,35 +275,38 @@ class assign_submission_onlinetext extends assign_submission_plugin {
             'submissionid' => $submission->id,
             'submissionattempt' => $submission->attemptnumber,
             'submissionstatus' => $submission->status,
-            'onlinetextwordcount' => $count,
+            'cmpaaswordcount' => $count,
             'groupid' => $groupid,
             'groupname' => $groupname
         );
 
-        if ($onlinetextsubmission) {
+        if ($cmpaassubmission) {
 
-            $onlinetextsubmission->onlinetext = $data->onlinetext;
-            $onlinetextsubmission->onlineformat = $data->onlinetext_editor['format'];
-            $params['objectid'] = $onlinetextsubmission->id;
-            $updatestatus = $DB->update_record('assignsubmission_onlinetext', $onlinetextsubmission);
-            $event = \assignsubmission_onlinetext\event\submission_updated::create($params);
+            $cmpaassubmission->cmpaas = $data->reply;
+            $cmpaassubmission->onlineformat = $data->cmpaas_editor['format'];
+            $params['objectid'] = $cmpaassubmission->id;
+            $updatestatus = $DB->update_record('assignsubmission_cmpaas', $cmpaassubmission);
+            echo $updatestatus." update ".$data->reply;
+            //sleep(10);
+            $event = \assignsubmission_cmpaas\event\submission_updated::create($params);
             $event->set_assign($this->assignment);
             $event->trigger();
             return $updatestatus;
         } else {
 
-            $onlinetextsubmission = new stdClass();
-            $onlinetextsubmission->onlinetext = $data->onlinetext;
-            $onlinetextsubmission->onlineformat = $data->onlinetext_editor['format'];
-
-            $onlinetextsubmission->submission = $submission->id;
-            $onlinetextsubmission->assignment = $this->assignment->get_instance()->id;
-            $onlinetextsubmission->id = $DB->insert_record('assignsubmission_onlinetext', $onlinetextsubmission);
-            $params['objectid'] = $onlinetextsubmission->id;
-            $event = \assignsubmission_onlinetext\event\submission_created::create($params);
+            $cmpaassubmission = new stdClass();
+            $cmpaassubmission->cmpaas = $data->reply;
+            $cmpaassubmission->onlineformat = $data->cmpaas_editor['format'];
+            $cmpaassubmission->submission = $submission->id;
+            $cmpaassubmission->assignment = $this->assignment->get_instance()->id;
+            $cmpaassubmission->id = $DB->insert_record('assignsubmission_cmpaas', $cmpaassubmission);
+            echo $cmpaassubmission->id."create";
+            //sleep(10);
+            $params['objectid'] = $cmpaassubmission->id;
+            $event = \assignsubmission_cmpaas\event\submission_created::create($params);
             $event->set_assign($this->assignment);
             $event->trigger();
-            return $onlinetextsubmission->id > 0;
+            return $cmpaassubmission->id > 0;
         }
     }
 
@@ -291,7 +316,7 @@ class assign_submission_onlinetext extends assign_submission_plugin {
      * @return array An array of field names and descriptions. (name=>description, ...)
      */
     public function get_editor_fields() {
-        return array('onlinetext' => get_string('pluginname', 'assignsubmission_comments'));
+        return array('cmpaas' => get_string('pluginname', 'assignsubmission_comments'));
     }
 
     /**
@@ -302,10 +327,10 @@ class assign_submission_onlinetext extends assign_submission_plugin {
      * @return string
      */
     public function get_editor_text($name, $submissionid) {
-        if ($name == 'onlinetext') {
-            $onlinetextsubmission = $this->get_onlinetext_submission($submissionid);
-            if ($onlinetextsubmission) {
-                return $onlinetextsubmission->onlinetext;
+        if ($name == 'cmpaas') {
+            $cmpaassubmission = $this->get_cmpaas_submission($submissionid);
+            if ($cmpaassubmission) {
+                return $cmpaassubmission->cmpaas;
             }
         }
 
@@ -320,10 +345,10 @@ class assign_submission_onlinetext extends assign_submission_plugin {
      * @return int
      */
     public function get_editor_format($name, $submissionid) {
-        if ($name == 'onlinetext') {
-            $onlinetextsubmission = $this->get_onlinetext_submission($submissionid);
-            if ($onlinetextsubmission) {
-                return $onlinetextsubmission->onlineformat;
+        if ($name == 'cmpaas') {
+            $cmpaassubmission = $this->get_cmpaas_submission($submissionid);
+            if ($cmpaassubmission) {
+                return $cmpaassubmission->onlineformat;
             }
         }
 
@@ -332,7 +357,7 @@ class assign_submission_onlinetext extends assign_submission_plugin {
 
 
      /**
-      * Display onlinetext word count in the submission status table
+      * Display cmpaas word count in the submission status table
       *
       * @param stdClass $submission
       * @param bool $showviewlink - If the summary has been truncated set this to true
@@ -341,16 +366,16 @@ class assign_submission_onlinetext extends assign_submission_plugin {
     public function view_summary(stdClass $submission, & $showviewlink) {
         global $CFG;
 
-        $onlinetextsubmission = $this->get_onlinetext_submission($submission->id);
+        $cmpaassubmission = $this->get_cmpaas_submission($submission->id);
         // Always show the view link.
         $showviewlink = true;
 
-        if ($onlinetextsubmission) {
-            $text = $this->assignment->render_editor_content(ASSIGNSUBMISSION_ONLINETEXT_FILEAREA,
-                                                             $onlinetextsubmission->submission,
+        if ($cmpaassubmission) {
+            $text = $this->assignment->render_editor_content(ASSIGNSUBMISSION_CMPAAS_FILEAREA,
+                                                             $cmpaassubmission->submission,
                                                              $this->get_type(),
-                                                             'onlinetext',
-                                                             'assignsubmission_onlinetext');
+                                                             'cmpaas',
+                                                             'assignsubmission_cmpaas');
 
             $shorttext = shorten_text($text, 140);
             $plagiarismlinks = '';
@@ -365,7 +390,7 @@ class assign_submission_onlinetext extends assign_submission_plugin {
                     'assignment' => $submission->assignment));
             }
             if ($text != $shorttext) {
-                $wordcount = get_string('numwords', 'assignsubmission_onlinetext', count_words($text));
+                $wordcount = get_string('numwords', 'assignsubmission_cmpaas', count_words($text));
 
                 return $plagiarismlinks . $wordcount . $shorttext;
             } else {
@@ -386,24 +411,24 @@ class assign_submission_onlinetext extends assign_submission_plugin {
         global $DB;
 
         $files = array();
-        $onlinetextsubmission = $this->get_onlinetext_submission($submission->id);
+        $cmpaassubmission = $this->get_cmpaas_submission($submission->id);
 
-        if ($onlinetextsubmission) {
-            $finaltext = $this->assignment->download_rewrite_pluginfile_urls($onlinetextsubmission->onlinetext, $user, $this);
+        if ($cmpaassubmission) {
+            $finaltext = $this->assignment->download_rewrite_pluginfile_urls($cmpaassubmission->cmpaas, $user, $this);
             $formattedtext = format_text($finaltext,
-                                         $onlinetextsubmission->onlineformat,
+                                         $cmpaassubmission->onlineformat,
                                          array('context'=>$this->assignment->get_context()));
             $head = '<head><meta charset="UTF-8"></head>';
             $submissioncontent = '<!DOCTYPE html><html>' . $head . '<body>'. $formattedtext . '</body></html>';
 
-            $filename = get_string('onlinetextfilename', 'assignsubmission_onlinetext');
+            $filename = get_string('cmpaasfilename', 'assignsubmission_cmpaas');
             $files[$filename] = array($submissioncontent);
 
             $fs = get_file_storage();
 
             $fsfiles = $fs->get_area_files($this->assignment->get_context()->id,
-                                           'assignsubmission_onlinetext',
-                                           ASSIGNSUBMISSION_ONLINETEXT_FILEAREA,
+                                           'assignsubmission_cmpaas',
+                                           ASSIGNSUBMISSION_CMPAAS_FILEAREA,
                                            $submission->id,
                                            'timemodified',
                                            false);
@@ -426,16 +451,16 @@ class assign_submission_onlinetext extends assign_submission_plugin {
         global $CFG;
         $result = '';
 
-        $onlinetextsubmission = $this->get_onlinetext_submission($submission->id);
+        $cmpaassubmission = $this->get_cmpaas_submission($submission->id);
 
-        if ($onlinetextsubmission) {
+        if ($cmpaassubmission) {
 
             // Render for portfolio API.
-            $result .= $this->assignment->render_editor_content(ASSIGNSUBMISSION_ONLINETEXT_FILEAREA,
-                                                                $onlinetextsubmission->submission,
+            $result .= $this->assignment->render_editor_content(ASSIGNSUBMISSION_CMPAAS_FILEAREA,
+                                                                $cmpaassubmission->submission,
                                                                 $this->get_type(),
-                                                                'onlinetext',
-                                                                'assignsubmission_onlinetext');
+                                                                'cmpaas',
+                                                                'assignsubmission_cmpaas');
 
             $plagiarismlinks = '';
 
@@ -498,22 +523,22 @@ class assign_submission_onlinetext extends assign_submission_plugin {
                             & $log) {
         global $DB;
 
-        $onlinetextsubmission = new stdClass();
-        $onlinetextsubmission->onlinetext = $oldsubmission->data1;
-        $onlinetextsubmission->onlineformat = $oldsubmission->data2;
+        $cmpaassubmission = new stdClass();
+        $cmpaassubmission->cmpaas = $oldsubmission->data1;
+        $cmpaassubmission->onlineformat = $oldsubmission->data2;
 
-        $onlinetextsubmission->submission = $submission->id;
-        $onlinetextsubmission->assignment = $this->assignment->get_instance()->id;
+        $cmpaassubmission->submission = $submission->id;
+        $cmpaassubmission->assignment = $this->assignment->get_instance()->id;
 
-        if ($onlinetextsubmission->onlinetext === null) {
-            $onlinetextsubmission->onlinetext = '';
+        if ($cmpaassubmission->cmpaas === null) {
+            $cmpaassubmission->cmpaas = '';
         }
 
-        if ($onlinetextsubmission->onlineformat === null) {
-            $onlinetextsubmission->onlineformat = editors_get_preferred_format();
+        if ($cmpaassubmission->onlineformat === null) {
+            $cmpaassubmission->onlineformat = editors_get_preferred_format();
         }
 
-        if (!$DB->insert_record('assignsubmission_onlinetext', $onlinetextsubmission) > 0) {
+        if (!$DB->insert_record('assignsubmission_cmpaas', $cmpaassubmission) > 0) {
             $log .= get_string('couldnotconvertsubmission', 'mod_assign', $submission->userid);
             return false;
         }
@@ -524,8 +549,8 @@ class assign_submission_onlinetext extends assign_submission_plugin {
                                                         'submission',
                                                         $oldsubmission->id,
                                                         $this->assignment->get_context()->id,
-                                                        'assignsubmission_onlinetext',
-                                                        ASSIGNSUBMISSION_ONLINETEXT_FILEAREA,
+                                                        'assignsubmission_cmpaas',
+                                                        ASSIGNSUBMISSION_CMPAAS_FILEAREA,
                                                         $submission->id);
         return true;
     }
@@ -538,13 +563,13 @@ class assign_submission_onlinetext extends assign_submission_plugin {
      */
     public function format_for_log(stdClass $submission) {
         // Format the info for each submission plugin (will be logged).
-        $onlinetextsubmission = $this->get_onlinetext_submission($submission->id);
-        $onlinetextloginfo = '';
-        $onlinetextloginfo .= get_string('numwordsforlog',
-                                         'assignsubmission_onlinetext',
-                                         count_words($onlinetextsubmission->onlinetext));
+        $cmpaassubmission = $this->get_cmpaas_submission($submission->id);
+        $cmpaasloginfo = '';
+        $cmpaasloginfo .= get_string('numwordsforlog',
+                                         'assignsubmission_cmpaas',
+                                         count_words($cmpaassubmission->cmpaas));
 
-        return $onlinetextloginfo;
+        return $cmpaasloginfo;
     }
 
     /**
@@ -554,7 +579,7 @@ class assign_submission_onlinetext extends assign_submission_plugin {
      */
     public function delete_instance() {
         global $DB;
-        $DB->delete_records('assignsubmission_onlinetext',
+        $DB->delete_records('assignsubmission_cmpaas',
                             array('assignment'=>$this->assignment->get_instance()->id));
 
         return true;
@@ -567,9 +592,9 @@ class assign_submission_onlinetext extends assign_submission_plugin {
      * @return bool
      */
     public function is_empty(stdClass $submission) {
-        $onlinetextsubmission = $this->get_onlinetext_submission($submission->id);
+        $cmpaassubmission = $this->get_cmpaas_submission($submission->id);
 
-        return empty($onlinetextsubmission->onlinetext);
+        return empty($cmpaassubmission->cmpaas);
     }
 
     /**
@@ -577,7 +602,7 @@ class assign_submission_onlinetext extends assign_submission_plugin {
      * @return array - An array of fileareas (keys) and descriptions (values)
      */
     public function get_file_areas() {
-        return array(ASSIGNSUBMISSION_ONLINETEXT_FILEAREA=>$this->get_name());
+        return array(ASSIGNSUBMISSION_CMPAAS_FILEAREA=>$this->get_name());
     }
 
     /**
@@ -592,25 +617,25 @@ class assign_submission_onlinetext extends assign_submission_plugin {
         // Copy the files across (attached via the text editor).
         $contextid = $this->assignment->get_context()->id;
         $fs = get_file_storage();
-        $files = $fs->get_area_files($contextid, 'assignsubmission_onlinetext',
-                                     ASSIGNSUBMISSION_ONLINETEXT_FILEAREA, $sourcesubmission->id, 'id', false);
+        $files = $fs->get_area_files($contextid, 'assignsubmission_cmpaas',
+                                     ASSIGNSUBMISSION_CMPAAS_FILEAREA, $sourcesubmission->id, 'id', false);
         foreach ($files as $file) {
             $fieldupdates = array('itemid' => $destsubmission->id);
             $fs->create_file_from_storedfile($fieldupdates, $file);
         }
 
-        // Copy the assignsubmission_onlinetext record.
-        $onlinetextsubmission = $this->get_onlinetext_submission($sourcesubmission->id);
-        if ($onlinetextsubmission) {
-            unset($onlinetextsubmission->id);
-            $onlinetextsubmission->submission = $destsubmission->id;
-            $DB->insert_record('assignsubmission_onlinetext', $onlinetextsubmission);
+        // Copy the assignsubmission_cmpaas record.
+        $cmpaassubmission = $this->get_cmpaas_submission($sourcesubmission->id);
+        if ($cmpaassubmission) {
+            unset($cmpaassubmission->id);
+            $cmpaassubmission->submission = $destsubmission->id;
+            $DB->insert_record('assignsubmission_cmpaas', $cmpaassubmission);
         }
         return true;
     }
 
     /**
-     * Return a description of external params suitable for uploading an onlinetext submission from a webservice.
+     * Return a description of external params suitable for uploading an cmpaas submission from a webservice.
      *
      * @return external_description|null
      */
@@ -619,13 +644,13 @@ class assign_submission_onlinetext extends assign_submission_plugin {
                               'format' => new external_value(PARAM_INT, 'The format for this submission'),
                               'itemid' => new external_value(PARAM_INT, 'The draft area id for files attached to the submission'));
         $editorstructure = new external_single_structure($editorparams, 'Editor structure', VALUE_OPTIONAL);
-        return array('onlinetext_editor' => $editorstructure);
+        return array('cmpaas_editor' => $editorstructure);
     }
 
     /**
-     * Compare word count of onlinetext submission to word limit, and return result.
+     * Compare word count of cmpaas submission to word limit, and return result.
      *
-     * @param string $submissiontext Onlinetext submission text from editor
+     * @param string $submissiontext cmpaas submission text from editor
      * @return string Error message if limit is enabled and exceeded, otherwise null
      */
     public function check_word_count($submissiontext) {
@@ -643,12 +668,10 @@ class assign_submission_onlinetext extends assign_submission_plugin {
         if ($wordcount <= $wordlimit) {
             return null;
         } else {
-            $errormsg = get_string('wordlimitexceeded', 'assignsubmission_onlinetext',
+            $errormsg = get_string('wordlimitexceeded', 'assignsubmission_cmpaas',
                     array('limit' => $wordlimit, 'count' => $wordcount));
             return $OUTPUT->error_text($errormsg);
         }
     }
 
 }
-
-
