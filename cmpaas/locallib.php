@@ -178,7 +178,6 @@ class assign_submission_cmpaas extends assign_submission_plugin {
                                              $mform->addElement('html', $jscript);
 
 
-
         return true;
     }
 
